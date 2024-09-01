@@ -14,10 +14,12 @@ llm = ChatOpenAI(model="gpt-3.5-turbo-0125")
 def main():
     load_dotenv()
 
-    print("## Welcome to the Article Writing Agent Demo! ##")
+    print("## Welcome to the Customer Support Agent Demo! ##")
     print('-----------------------------------')
-    topic = input("What topic do you want to write about?\n")
-
+    customer = input("What is the company name?\n")
+    person = input("What is the customer name?\n")
+    inquiry = input("What is the inquiry about?\n")
+    
     tasks = customer_support_tasks()
     agents = customer_support_agents()
 
@@ -26,20 +28,21 @@ def main():
     support_quality_assurance_agent = agents.support_quality_assurance_agent(customer)
 
     # create tasks
-    plan = tasks.plan(topic, planner)
-    check = tasks.check(topic, checker)
-    write = tasks.write(topic, writer)
-    edit = tasks.edit(editor)
+    inquiry_resolution = tasks.inquiry_resolution(customer, inquiry, person)
+    quality_assurance_review = tasks.quality_assurance_review()
 
-    edit.context = [write]
+    inquiry_resolution.context = [quality_assurance_review]
 
     crew = Crew(
-        agents=[planner, checker, writer, editor],
-        tasks=[plan, check, write, edit],
-        verbose=True
+        agents=[support_agent, support_quality_assurance_agent],
+        tasks=[inquiry_resolution, quality_assurance_review],
+        verbose=True,
+        memory=True
     )
 
-    result = crew.kickoff(inputs={"topic": topic})
+    result = crew.kickoff(inputs=[{"customer": customer}, 
+                                  {"person": person},
+                                  {"inquiry": inquiry}])
 
     print(result)
 
