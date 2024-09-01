@@ -2,7 +2,7 @@ from crewai import Task
 
 
 class customer_support_tasks():
-    def inquiry_resolution(self, customer, inquiry, person):
+    def inquiry_resolution(self, customer, inquiry, person, agent):
         return Task(
             description=(
             "{customer} just reached out with a super important ask:\n"
@@ -28,7 +28,7 @@ class customer_support_tasks():
         agent=agent,
     )
 
-    def quality_assurance_review():
+    def quality_assurance_review(self, agent):
         return Task(
             description=(
                 "Review the response drafted by the Senior Support Representative for {customer}'s inquiry. "

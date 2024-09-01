@@ -1,5 +1,5 @@
 
-from crewai import Agents
+from crewai import Agent
 
 class customer_support_agents():
 

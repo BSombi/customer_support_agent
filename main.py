@@ -1,5 +1,6 @@
 from dotenv import load_dotenv
 from crewai import Crew
+from crewai_tools import tools
 from tasks import customer_support_tasks
 from agents import customer_support_agents
 from textwrap import dedent
@@ -9,7 +10,7 @@ from utils import get_openai_api_key
 
 openai_api_key = get_openai_api_key()
 os.environ["OPENAI_MODEL_NAME"] = 'gpt-3.5-turbo-0125'
-llm = ChatOpenAI(model="gpt-3.5-turbo-0125")
+#llm = ChatOpenAI(model="gpt-3.5-turbo-0125")
 
 def main():
     load_dotenv()
@@ -32,6 +33,8 @@ def main():
     quality_assurance_review = tasks.quality_assurance_review()
 
     inquiry_resolution.context = [quality_assurance_review]
+
+    docs_scrape_tool = tools.docs_scrape_tool()
 
     crew = Crew(
         agents=[support_agent, support_quality_assurance_agent],
